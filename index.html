@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cats Fan Page</title>
+    <meta name="description" content="A cozy fan page celebrating cats: photos, facts, and fun." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🐱</text></svg>">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#home" aria-label="Cats Fan Page home">🐱 Cats</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#facts">Facts</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button id="theme-toggle" class="button button-ghost" aria-label="Toggle dark mode">
+          🌙
+        </button>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="container hero-inner">
+          <h1>The Purrfect Cats Fan Page</h1>
+          <p>Photos, facts, and endless adorableness. Welcome, fellow cat enthusiast!</p>
+          <div class="hero-actions">
+            <button id="fact-button" class="button">Show a random cat fact</button>
+            <p id="fact-output" class="fact-output" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container">
+          <h2>About</h2>
+          <p>
+            This fan page is a small tribute to our feline friends. From curious
+            whiskers to majestic loafs, cats brighten our days in countless ways.
+          </p>
+        </div>
+      </section>
+
+      <section id="gallery" class="section">
+        <div class="container">
+          <h2>Gallery</h2>
+          <div class="grid gallery-grid">
+            <figure>
+              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1280/840" aria-label="Open image Curious Kitten">
+                <img src="https://placekitten.com/640/420" alt="Cute kitten looking at camera" loading="lazy" />
+              </a>
+              <figcaption>Curious Kitten</figcaption>
+            </figure>
+            <figure>
+              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1281/840" aria-label="Open image Lazy Afternoon">
+                <img src="https://placekitten.com/641/420" alt="Cat lounging on a couch" loading="lazy" />
+              </a>
+              <figcaption>Lazy Afternoon</figcaption>
+            </figure>
+            <figure>
+              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1282/840" aria-label="Open image Sunbeam Joy">
+                <img src="https://placekitten.com/642/420" alt="Tabby cat in the sunlight" loading="lazy" />
+              </a>
+              <figcaption>Sunbeam Joy</figcaption>
+            </figure>
+            <figure>
+              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1280/841" aria-label="Open image Play Time">
+                <img src="https://placekitten.com/640/421" alt="Cat playing with yarn" loading="lazy" />
+              </a>
+              <figcaption>Play Time</figcaption>
+            </figure>
+            <figure>
+              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1279/840" aria-label="Open image Majestic Loaf">
+                <img src="https://placekitten.com/639/420" alt="Cat loaf position on a rug" loading="lazy" />
+              </a>
+              <figcaption>Majestic Loaf</figcaption>
+            </figure>
+            <figure>
+              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1280/842" aria-label="Open image Fluffy Floof">
+                <img src="https://placekitten.com/640/422" alt="Fluffy cat close-up" loading="lazy" />
+              </a>
+              <figcaption>Fluffy Floof</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="facts" class="section">
+        <div class="container">
+          <h2>Fun Facts</h2>
+          <ul class="facts-list">
+            <li>Cats sleep for 12–16 hours a day to conserve energy.</li>
+            <li>A group of cats is called a “clowder.”</li>
+            <li>Cats can make over 100 different vocal sounds.</li>
+            <li>Each cat’s nose print is unique, like a human fingerprint.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+      <section id="contact" class="section">
+        <div class="container">
+          <h2>Contact</h2>
+          <form id="contact-form" class="contact-form" novalidate>
+            <div class="form-row">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" required placeholder="Your name" />
+              <small class="error" id="error-name" aria-live="polite"></small>
+            </div>
+            <div class="form-row">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required placeholder="you@example.com" />
+              <small class="error" id="error-email" aria-live="polite"></small>
+            </div>
+            <div class="form-row">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="4" required placeholder="Say hello and share your cat story!"></textarea>
+              <small class="error" id="error-message" aria-live="polite"></small>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="button">Send</button>
+              <span id="form-status" class="form-status" aria-live="polite"></span>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Lightbox Modal -->
+      <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
+        <button id="lightbox-close" class="lightbox-close" aria-label="Close">✕</button>
+        <img id="lightbox-img" alt="Expanded cat image" />
+      </div>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          Made with ❤️ by a cat fan. Share your kitty pics!
+          <a href="#home">Back to top ↑</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+  </html>
+
+
