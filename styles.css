@@ -34,6 +34,13 @@ body {
   line-height: 1.6;
 }
 
+[data-theme="light"] body {
+  background: radial-gradient(1000px 600px at 20% -10%, rgba(255, 179, 186, 0.45), transparent 60%),
+              radial-gradient(1000px 600px at 110% 0%, rgba(173, 216, 230, 0.45), transparent 60%),
+              radial-gradient(800px 500px at 50% 120%, rgba(255, 224, 138, 0.35), transparent 60%),
+              var(--bg);
+}
+
 .container {
   width: min(1100px, 92%);
   margin: 0 auto;
@@ -78,8 +85,69 @@ body {
 }
 .hero-inner h1 { font-size: clamp(32px, 6vw, 56px); line-height: 1.1; margin: 0 0 10px; }
 .hero-inner p { margin: 0 0 18px; color: var(--muted); }
-.hero-actions { display: grid; gap: 10px; align-items: center; grid-template-columns: auto 1fr; }
-.fact-output { margin: 0; color: var(--accent); min-height: 1.4em; }
+.hero-actions { display: grid; gap: 10px; align-items: center; }
+.fact-output { display: none; }
+
+/* Chips */
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.chip.is-active {
+  border-color: color-mix(in oklab, var(--brand) 40%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 20%, transparent);
+}
+
+/* Compliment card */
+.compliment-card {
+  margin-top: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  font-size: clamp(18px, 2.5vw, 22px);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  min-height: 64px;
+  opacity: 0.98;
+}
+.compliment-card.animate {
+  animation: pop 420ms ease;
+}
+@keyframes pop {
+  0% { transform: scale(0.98); opacity: 0; }
+  60% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.compliment-actions { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+.copy-status { color: var(--accent); min-width: 120px; }
+
+/* Custom editor */
+.custom-editor {
+  margin-top: 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.custom-editor h3 { margin: 0 0 8px; font-size: 18px; }
+.editor-row { display: grid; gap: 6px; margin-bottom: 10px; }
+.editor-row input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--panel) 96%, transparent);
+  color: var(--text);
+}
+.editor-actions { display: flex; gap: 10px; align-items: center; }
+.editor-status { color: var(--accent); }
 
 /* Sections */
 .section { padding: 40px 0; }

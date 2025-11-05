@@ -12,13 +12,8 @@
   <body>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="brand" href="#home" aria-label="Cats Fan Page home">🐱 Cats</a>
-        <nav class="nav" aria-label="Primary">
-          <a href="#about">About</a>
-          <a href="#gallery">Gallery</a>
-          <a href="#facts">Facts</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <a class="brand" href="#home" aria-label="Home">Home</a>
+        <nav class="nav" aria-label="Primary"></nav>
         <button id="theme-toggle" class="button button-ghost" aria-label="Toggle dark mode">
           🌙
         </button>
@@ -28,121 +23,54 @@
     <main id="home">
       <section class="hero">
         <div class="container hero-inner">
-          <h1>The Purrfect Cats Fan Page</h1>
-          <p>Photos, facts, and endless adorableness. Welcome, fellow cat enthusiast!</p>
+          <h1>Compliment machine</h1>
+          <p>Get a wholesome compliment by category. Copy and share the joy! ✨</p>
           <div class="hero-actions">
-            <button id="fact-button" class="button">Show a random cat fact</button>
-            <p id="fact-output" class="fact-output" aria-live="polite"></p>
+            <div class="chip-group" role="tablist" aria-label="Compliment categories">
+              <button class="chip is-active" role="tab" aria-selected="true" data-category="all">All</button>
+              <button class="chip" role="tab" aria-selected="false" data-category="study">Study</button>
+              <button class="chip" role="tab" aria-selected="false" data-category="career">Career</button>
+              <button class="chip" role="tab" aria-selected="false" data-category="wellness">Wellness</button>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="about" class="section">
+      <section id="compliments" class="section">
         <div class="container">
-          <h2>About</h2>
-          <p>
-            This fan page is a small tribute to our feline friends. From curious
-            whiskers to majestic loafs, cats brighten our days in countless ways.
-          </p>
-        </div>
-      </section>
-
-      <section id="gallery" class="section">
-        <div class="container">
-          <h2>Gallery</h2>
-          <div class="grid gallery-grid">
-            <figure>
-              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1280/840" aria-label="Open image Curious Kitten">
-                <img src="https://placekitten.com/640/420" alt="Cute kitten looking at camera" loading="lazy" />
-              </a>
-              <figcaption>Curious Kitten</figcaption>
-            </figure>
-            <figure>
-              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1281/840" aria-label="Open image Lazy Afternoon">
-                <img src="https://placekitten.com/641/420" alt="Cat lounging on a couch" loading="lazy" />
-              </a>
-              <figcaption>Lazy Afternoon</figcaption>
-            </figure>
-            <figure>
-              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1282/840" aria-label="Open image Sunbeam Joy">
-                <img src="https://placekitten.com/642/420" alt="Tabby cat in the sunlight" loading="lazy" />
-              </a>
-              <figcaption>Sunbeam Joy</figcaption>
-            </figure>
-            <figure>
-              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1280/841" aria-label="Open image Play Time">
-                <img src="https://placekitten.com/640/421" alt="Cat playing with yarn" loading="lazy" />
-              </a>
-              <figcaption>Play Time</figcaption>
-            </figure>
-            <figure>
-              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1279/840" aria-label="Open image Majestic Loaf">
-                <img src="https://placekitten.com/639/420" alt="Cat loaf position on a rug" loading="lazy" />
-              </a>
-              <figcaption>Majestic Loaf</figcaption>
-            </figure>
-            <figure>
-              <a href="#" class="lightbox-link" data-full="https://placekitten.com/1280/842" aria-label="Open image Fluffy Floof">
-                <img src="https://placekitten.com/640/422" alt="Fluffy cat close-up" loading="lazy" />
-              </a>
-              <figcaption>Fluffy Floof</figcaption>
-            </figure>
+          <h2>Your Compliment</h2>
+          <div class="compliment-card" aria-live="polite" id="compliment-output">Pick a category and tap the button!</div>
+          <div class="compliment-actions">
+            <button id="compliment-button" class="button">Give me a compliment</button>
+            <button id="copy-button" class="button button-ghost" aria-label="Copy compliment">Copy</button>
+            <span id="copy-status" class="copy-status" aria-live="polite"></span>
           </div>
-        </div>
-      </section>
-
-      <section id="facts" class="section">
-        <div class="container">
-          <h2>Fun Facts</h2>
-          <ul class="facts-list">
-            <li>Cats sleep for 12–16 hours a day to conserve energy.</li>
-            <li>A group of cats is called a “clowder.”</li>
-            <li>Cats can make over 100 different vocal sounds.</li>
-            <li>Each cat’s nose print is unique, like a human fingerprint.</li>
-          </ul>
+          <div class="custom-editor" aria-labelledby="custom-editor-title">
+            <h3 id="custom-editor-title">Custom categories</h3>
+            <div class="editor-row">
+              <label for="new-category">Category name</label>
+              <input id="new-category" type="text" placeholder="e.g., friends" />
+            </div>
+            <div class="editor-row">
+              <label for="new-compliment">Compliment text</label>
+              <input id="new-compliment" type="text" placeholder="Write a compliment to add" />
+            </div>
+            <div class="editor-actions">
+              <button id="add-compliment" class="button">Add to category</button>
+              <small id="editor-status" class="editor-status" aria-live="polite"></small>
+            </div>
+          </div>
         </div>
       </section>
     </main>
 
-      <section id="contact" class="section">
-        <div class="container">
-          <h2>Contact</h2>
-          <form id="contact-form" class="contact-form" novalidate>
-            <div class="form-row">
-              <label for="name">Name</label>
-              <input id="name" name="name" type="text" required placeholder="Your name" />
-              <small class="error" id="error-name" aria-live="polite"></small>
-            </div>
-            <div class="form-row">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" required placeholder="you@example.com" />
-              <small class="error" id="error-email" aria-live="polite"></small>
-            </div>
-            <div class="form-row">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="4" required placeholder="Say hello and share your cat story!"></textarea>
-              <small class="error" id="error-message" aria-live="polite"></small>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="button">Send</button>
-              <span id="form-status" class="form-status" aria-live="polite"></span>
-            </div>
-          </form>
-        </div>
-      </section>
+      
 
-      <!-- Lightbox Modal -->
-      <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
-        <button id="lightbox-close" class="lightbox-close" aria-label="Close">✕</button>
-        <img id="lightbox-img" alt="Expanded cat image" />
-      </div>
+      <!-- Removed gallery lightbox for compliment-focused homepage -->
 
     <footer class="site-footer">
       <div class="container">
-        <p>
-          Made with ❤️ by a cat fan. Share your kitty pics!
-          <a href="#home">Back to top ↑</a>
-        </p>
+        <p><a href="#home">Back to top ↑</a></p>
       </div>
     </footer>
 

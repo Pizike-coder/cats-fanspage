@@ -31,66 +31,157 @@
     });
   }
 
-  // Random fact
-  const facts = [
-    "Cats sleep for 12–16 hours a day.",
-    "A group of cats is called a clowder.",
-    "Each cat's nose print is unique.",
-    "Cats can rotate their ears 180 degrees.",
-    "The oldest known pet cat existed 9,500 years ago.",
-    "Cats have a third eyelid called the nictitating membrane.",
-    "A cat can jump up to six times its length.",
-    "Purring may help cats heal by promoting bone regeneration.",
-    "Cats walk like camels and giraffes: both right legs move first.",
-  ];
-
-  function randomFact() {
-    return facts[Math.floor(Math.random() * facts.length)];
+  // Compliments dataset (bootstrapped, can be extended by user)
+  const STORAGE_KEY = 'cmp-pro-data';
+  function loadCompliments() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (_) {}
+    return null;
+  }
+  function saveCompliments(obj) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); } catch (_) {}
   }
 
-  const factBtn = document.getElementById("fact-button");
-  const factOut = document.getElementById("fact-output");
-  if (factBtn && factOut) {
-    factBtn.addEventListener("click", () => {
-      factOut.textContent = randomFact();
+  let compliments = loadCompliments() || {
+    study: [
+      "Your curiosity is your superpower—keep asking great questions.",
+      "You turn complex topics into clear, simple ideas. That's real skill.",
+      "Your consistency beats motivation every time—well done showing up.",
+      "Your notes could teach a class. Seriously impressive.",
+      "You learn fast and explain even faster. A+ teammate energy.",
+    ],
+    career: [
+      "You bring clarity to chaos—people trust you for a reason.",
+      "Your work ethic quietly sets the standard for the room.",
+      "You don't just solve problems—you make better ones impossible.",
+      "Your presence makes teams braver and projects smoother.",
+      "Your judgment is solid—I'd ship anything with you on it.",
+    ],
+    wellness: [
+      "You are allowed to take up space—rest is part of progress.",
+      "Your kindness has a ripple effect you'll never fully see.",
+      "Small steps count. You're building something beautiful.",
+      "Your calm is contagious. People feel safe around you.",
+      "You're doing great—be as gentle to yourself as you are to others.",
+    ],
+  };
+
+  function getAllCompliments() {
+    return Object.values(compliments).flat();
+  }
+
+  function getRandomCompliment(category) {
+    const pool = category && category !== "all" ? (compliments[category] || getAllCompliments()) : getAllCompliments();
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  // Category chips (support dynamic categories)
+  const chipGroup = document.querySelector('.chip-group');
+  let currentCategory = 'all';
+  function setActiveChip(category) {
+    const buttons = chipGroup ? Array.from(chipGroup.querySelectorAll('.chip')) : [];
+    buttons.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
+    const match = chipGroup && chipGroup.querySelector(`.chip[data-category="${category}"]`);
+    if (match) { match.classList.add('is-active'); match.setAttribute('aria-selected', 'true'); }
+    currentCategory = category;
+  }
+  function ensureChip(category) {
+    if (!chipGroup) return;
+    if (category === 'all') return;
+    if (chipGroup.querySelector(`.chip[data-category="${category}"]`)) return;
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', 'false');
+    btn.setAttribute('data-category', category);
+    btn.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+    chipGroup.appendChild(btn);
+  }
+  function renderChipsFromData() {
+    Object.keys(compliments).forEach(cat => ensureChip(cat));
+  }
+  renderChipsFromData();
+  if (chipGroup) {
+    chipGroup.addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      const cat = chip.getAttribute('data-category') || 'all';
+      setActiveChip(cat);
     });
   }
 
-  // Lightbox
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img");
-  const lightboxClose = document.getElementById("lightbox-close");
-  function openLightbox(src) {
-    if (!lightbox || !lightboxImg) return;
-    lightboxImg.src = src;
-    lightbox.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
+  // Compliment generation + copy
+  const out = document.getElementById('compliment-output');
+  const btn = document.getElementById('compliment-button');
+  const copyBtn = document.getElementById('copy-button');
+  const copyStatus = document.getElementById('copy-status');
+
+  function showCompliment() {
+    const text = getRandomCompliment(currentCategory);
+    if (!out) return;
+    out.textContent = text + ' ' + pickEmoji(currentCategory);
+    out.classList.remove('animate');
+    // reflow
+    void out.offsetWidth;
+    out.classList.add('animate');
   }
-  function closeLightbox() {
-    if (!lightbox || !lightboxImg) return;
-    lightbox.setAttribute("aria-hidden", "true");
-    lightboxImg.removeAttribute("src");
-    document.body.style.overflow = "";
+
+  function pickEmoji(category) {
+    if (category === 'study') return '📚✨';
+    if (category === 'career') return '🚀💼';
+    if (category === 'wellness') return '🌿💖';
+    return '⭐️';
   }
-  document.addEventListener("click", (e) => {
-    const link = e.target.closest && e.target.closest(".lightbox-link");
-    if (link) {
-      e.preventDefault();
-      const full = link.getAttribute("data-full");
-      if (full) openLightbox(full);
-    }
-  });
-  if (lightbox) {
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
+
+  if (btn) btn.addEventListener('click', showCompliment);
+  if (copyBtn && out) {
+    copyBtn.addEventListener('click', async () => {
+      const text = out.textContent?.trim();
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyStatus.textContent = 'Copied!';
+      } catch (_) {
+        copyStatus.textContent = 'Press Ctrl+C to copy.';
+      }
+      setTimeout(() => { copyStatus.textContent = ''; }, 1600);
     });
   }
-  if (lightboxClose) {
-    lightboxClose.addEventListener("click", closeLightbox);
+
+  // Custom category editor
+  const newCat = document.getElementById('new-category');
+  const newCompliment = document.getElementById('new-compliment');
+  const addBtn = document.getElementById('add-compliment');
+  const editorStatus = document.getElementById('editor-status');
+  function normalizeCategory(v) {
+    return (v || '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
   }
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeLightbox();
-  });
+  function showEditorStatus(msg) {
+    if (!editorStatus) return;
+    editorStatus.textContent = msg;
+    setTimeout(() => { editorStatus.textContent = ''; }, 1600);
+  }
+  if (addBtn && newCat && newCompliment) {
+    addBtn.addEventListener('click', () => {
+      const rawCat = newCat.value;
+      const cat = normalizeCategory(rawCat);
+      const text = newCompliment.value.trim();
+      if (!cat) { showEditorStatus('Enter a category name.'); return; }
+      if (!text) { showEditorStatus('Write a compliment to add.'); return; }
+      if (!compliments[cat]) compliments[cat] = [];
+      compliments[cat].push(text);
+      saveCompliments(compliments);
+      ensureChip(cat);
+      setActiveChip(cat);
+      showEditorStatus('Added!');
+      newCompliment.value = '';
+      showCompliment();
+    });
+  }
+
+  // Removed lightbox logic for compliment-focused page
 
   // Contact form validation (client-side only)
   const form = document.getElementById("contact-form");
